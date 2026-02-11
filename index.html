@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Pendataan Alumni & Mahasiswa</title>
+    <title>Tracer Alumni Penerima KJMU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,7 +17,7 @@
 <div x-data="formHandler()" class="max-w-2xl mx-auto my-12 px-4">
     <div class="mb-8 text-center">
         <img src="https://i.imgur.com/7QcgJj0.png" alt="Logo P4OP" class="h-[200px] w-auto mx-auto mb-4 object-contain">
-        <h1 class="text-2xl font-bold tracking-tight text-slate-900">Tracing Alumni KJMU</h1>
+        <h1 class="text-2xl font-bold tracking-tight text-slate-900">Tracer Study Alumni KJMU</h1>
         <p class="text-slate-500 mt-2 text-sm">Pastikan data yang Anda masukkan benar dan sesuai.</p>
     </div>
 
@@ -273,15 +273,16 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah Karyawan</label>
-                            <input type="text" x-model="formData.jumlah_karyawan" placeholder="Contoh: 25"
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jumlah Karyawan (Hanya Angka)</label>
+                            <input type="text" x-model="formData.jumlah_karyawan" oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                               placeholder="Contoh: 25"
                                    class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
                         </div>
                     </div>
 
                     <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Omset per Bulan (Hanya Angka)</label>
-                        <input type="text" x-model="formData.omset" oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
+                        <input type="text" x-model="formData.omset" oninput="let val = this.value.replace(/\D/g, '');this.value = val.replace(/\B(?=(\d{3})+(?!\d))/g, '.');"
                                placeholder="Contoh: 15000000"
                                class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
                     </div>
@@ -310,7 +311,7 @@
         </div>
     </div>
     
-    <p class="text-center text-[10px] text-slate-400 mt-6 tracking-widest uppercase italic">Form Tracing Alumni KJMU</p>
+    <p class="text-center text-[10px] text-slate-400 mt-6 tracking-widest uppercase italic">Form Tracer Study Alumni KJMU</p>
 </div>
 
 <script>
