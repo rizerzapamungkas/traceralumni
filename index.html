@@ -6,6 +6,7 @@
     <title>Tracer Alumni Penerima KJMU</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -405,40 +406,59 @@
             },
 
             async submitData() {
-                if (!this.status) {
-                    alert("Silakan pilih status Anda saat ini.");
-                    return;
-                }
+    if (!this.status) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Ups!',
+            text: 'Silakan pilih status Anda saat ini.',
+            confirmButtonColor: '#0f172a'
+        });
+        return;
+    }
 
-                this.loading = true;
+    this.loading = true;
 
-                // Mapping status ke nama tabel
-                const tableMap = {
-                    'Bekerja': 'bekerja',
-                    'Cari Kerja': 'mencari_kerja',
-                    'Lanjut Kuliah': 'lanjut_kuliah',
-                    'Wirausaha': 'wirausaha'
-                };
+    const tableMap = {
+        'Bekerja': 'bekerja',
+        'Cari Kerja': 'mencari_kerja',
+        'Lanjut Kuliah': 'lanjut_kuliah',
+        'Wirausaha': 'wirausaha'
+    };
 
-                const targetTable = tableMap[this.status];
+    const targetTable = tableMap[this.status];
 
-                try {
-                    const { error } = await supabaseClient
-                        .from(targetTable)
-                        .insert([this.formData]);
+    try {
+        const { error } = await supabaseClient
+            .from(targetTable)
+            .insert([this.formData]);
 
-                    if (error) throw error;
+        if (error) throw error;
 
-                    alert("Data Anda berhasil disimpan!");
-                    window.location.reload();
+        // Animasi Berhasil
+        await Swal.fire({
+            icon: 'success',
+            title: 'Berhasil!',
+            text: 'Data Anda telah tersimpan dalam sistem.',
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+        });
 
-                } catch (e) {
-                    console.error(e);
-                    alert("Terjadi kesalahan saat menyimpan data.");
-                } finally {
-                    this.loading = false;
-                }
-            }
+        window.location.reload();
+
+    } catch (e) {
+        console.error(e);
+        // Animasi Gagal
+        Swal.fire({
+            icon: 'error',
+            title: 'Gagal Menyimpan',
+            text: 'Terjadi kendala teknis. Silakan coba beberapa saat lagi.',
+            confirmButtonColor: '#0f172a'
+        });
+    } finally {
+        this.loading = false;
+    }
+}
         }
     }
 </script>
