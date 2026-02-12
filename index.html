@@ -368,42 +368,76 @@
             formData: {}, // Objek penampung data input
 
             async verifyNik() {
-                if (this.inputNik.length < 10) {
-                    this.errorMsg = "Masukkan NIK yang valid.";
-                    return;
-                }
+    if (this.inputNik.length < 10) {
+        this.errorMsg = "Masukkan NIK yang valid.";
+        return;
+    }
 
-                this.loading = true;
-                this.errorMsg = '';
+    this.loading = true;
+    this.errorMsg = '';
 
-                try {
-                    const { data, error } = await supabaseClient
-                        .from('alumni') 
-                        .select('nik, nama, namapt, prodi')
-                        .eq('nik', this.inputNik)
-                        .maybeSingle();
+    try {
+        // 1. Cek dulu apakah NIK ada di tabel master alumni
+        const { data: student, error: studentError } = await supabaseClient
+            .from('alumni')
+            .select('nik, nama, namapt, prodi')
+            .eq('nik', this.inputNik)
+            .maybeSingle();
 
-                    if (error) throw error;
+        if (studentError) throw studentError;
 
-                    if (!data) {
-                        this.errorMsg = "NIK tidak terdaftar dalam sistem.";
-                    } else {
-                        this.studentData = data;
-                        this.formData = { 
-    nik: data.nik,
-    nama: data.nama,
-    namapt: data.namapt,
-    prodi: data.prodi
-};
-                        this.step = 2;
-                    }
-                } catch (e) {
-                    this.errorMsg = "Gagal terhubung ke server.";
-                    console.error(e);
-                } finally {
-                    this.loading = false;
-                }
-            },
+        if (!student) {
+            this.errorMsg = "NIK tidak terdaftar dalam sistem.";
+            this.loading = false;
+            return;
+        }
+
+        // 2. Cek apakah NIK sudah ada di salah satu tabel tujuan (Data Ganda)
+        const tables = ['bekerja', 'mencari_kerja', 'lanjut_kuliah', 'wirausaha'];
+        
+        // Melakukan pengecekan ke semua tabel secara bersamaan
+        const checks = await Promise.all(
+            tables.map(table => 
+                supabaseClient
+                    .from(table)
+                    .select('nik')
+                    .eq('nik', this.inputNik)
+                    .maybeSingle()
+            )
+        );
+
+        // Periksa apakah ada record yang ditemukan
+        const alreadySubmitted = checks.some(result => result.data !== null);
+
+        if (alreadySubmitted) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Data Sudah Ada',
+                text: 'Anda sudah mengisi formulir Tracer Study sebelumnya. Terima kasih!',
+                confirmButtonColor: '#0f172a'
+            });
+            this.inputNik = ''; // Reset input
+            this.loading = false;
+            return;
+        }
+
+        // 3. Jika lolos semua cek, lanjut ke Step 2
+        this.studentData = student;
+        this.formData = { 
+            nik: student.nik,
+            nama: student.nama,
+            namapt: student.namapt,
+            prodi: student.prodi
+        };
+        this.step = 2;
+
+    } catch (e) {
+        this.errorMsg = "Gagal terhubung ke server.";
+        console.error(e);
+    } finally {
+        this.loading = false;
+    }
+},
 
             async submitData() {
     if (!this.status) {
