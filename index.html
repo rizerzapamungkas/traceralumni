@@ -100,12 +100,13 @@
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-xs font-semibold text-slate-600 mb-1">Kategori Instansi</label>
-                                <select x-model="formData.kat_instansi" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
-                                    <option value="">Pilih Kategori</option>
-                                    <option>Swasta</option>
-                                    <option>ASN / Pemerintahan</option>
-                                    <option>BUMN</option>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang saat menerima KJMU</label>
+                                <select x-model="formData.jenjang" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                                    <option value="">Pilih Jenjang</option>
+                                    <option>D3</option>
+                                    <option>D4</option>
+                                    <option>S1</option>
+                                    <option>Profesi</option>
                                 </select>
                             </div>
                             <div>
@@ -117,6 +118,16 @@
                                     <option>> 10 Juta</option>
                                 </select>
                             </div>
+                        </div>
+
+                        <div>
+                                <label class="block text-xs font-semibold text-slate-600 mb-1">Kategori Instansi</label>
+                                <select x-model="formData.kat_instansi" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                                    <option value="">Pilih Kategori</option>
+                                    <option>Swasta</option>
+                                    <option>ASN / Pemerintahan</option>
+                                    <option>BUMN</option>
+                                </select>
                         </div>
 
                         <div>
@@ -152,12 +163,22 @@
                                 </template>
                             </select>
                         </div>
-                    </div>
-                    <div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang saat menerima KJMU</label>
+                            <select x-model="formData.jenjang" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                                <option value="">Pilih Jenjang</option>
+                                <option>D3</option>
+                                <option>D4</option>
+                                <option>S1</option>
+                                <option>Profesi</option>
+                            </select>
+                        </div>
+                        <div>
                         <label class="block text-xs font-semibold text-slate-600 mb-1">Nomor Kontak (WhatsApp)</label>
                         <input type="text" x-model="formData.kontak" maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '')" 
                                placeholder="08xxxxxxxxxx"
                                class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                        </div>
                     </div>
                 </div>
 
@@ -178,12 +199,31 @@
                                 </template>
                             </select>
                         </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang saat menerima KJMU</label>
+                            <select x-model="formData.jenjang" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                                <option value="">Pilih Jenjang</option>
+                                <option>D3</option>
+                                <option>D4</option>
+                                <option>S1</option>
+                                <option>Profesi</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang Lanjut Kuliah</label>
+                            <select x-model="formData.jenjang_saatini" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                                <option value="">Pilih Jenjang</option>
+                                <option>S1</option>
+                                <option>S2</option>
+                                <option>S3</option>
+                            </select>
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Perguruan Tinggi Saat Ini</label>
-                            <input type="text" x-model="formData.pt_saatini" placeholder="Nama Kampus Baru"
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">IPK Saat Ini</label>
+                            <input type="text" x-model="formData.ipk_saatini" placeholder="Contoh: 3.80"
                                    class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
                         </div>
                         <div>
@@ -193,23 +233,11 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang Saat Ini</label>
-                            <select x-model="formData.jenjang_saatini" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
-                                <option value="">Pilih Jenjang</option>
-                                <option>S1</option>
-                                <option>S2</option>
-                                <option>S3</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">IPK Saat Ini</label>
-                            <input type="text" x-model="formData.ipk_saatini" placeholder="Contoh: 3.80"
-                                   class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
-                        </div>
+                    <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Perguruan Tinggi Saat Ini</label>
+                            <input type="text" x-model="formData.pt_saatini" placeholder="Nama Kampus Baru" rows="2" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none"></textarea>
                     </div>
-
+                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Status Perguruan Tinggi</label>
@@ -247,17 +275,19 @@
                                 </template>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Jenjang saat menerima KJMU</label>
+                            <select x-model="formData.jenjang" class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
+                                <option value="">Pilih Jenjang</option>
+                                <option>D3</option>
+                                <option>D4</option>
+                                <option>S1</option>
+                                <option>Profesi</option>
+                            </select>
+                        </div>
                         <div>
                             <label class="block text-xs font-semibold text-slate-600 mb-1">Bidang Usaha</label>
                             <input type="text" x-model="formData.bidang_usaha" placeholder="Contoh: F&B / Digital Agency"
-                                   class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Brand / Bisnis</label>
-                            <input type="text" x-model="formData.nama_brand" placeholder="Contoh: Ettagrow"
                                    class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
                         </div>
                     </div>
@@ -278,6 +308,12 @@
                                placeholder="Contoh: 25"
                                    class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
                         </div>
+                    </div>
+
+                    <div>
+                            <label class="block text-xs font-semibold text-slate-600 mb-1">Nama Brand / Bisnis</label>
+                            <input type="text" x-model="formData.nama_brand" placeholder="Contoh: Ettagrow"
+                                   class="w-full p-2 border border-slate-300 rounded text-sm focus:border-slate-900 outline-none">
                     </div>
 
                     <div>
