@@ -440,18 +440,36 @@
 },
 
             async submitData() {
+    // 1. Definisikan field wajib berdasarkan status yang dipilih
+    const requiredFields = {
+        'Bekerja': ['kontak', 'tahun_lulus', 'jenjang', 'gaji', 'kat_instansi', 'nama_instansi', 'jabatan', 'alamat_instansi'],
+        'Cari Kerja': ['ipk', 'tahun_lulus', 'jenjang', 'kontak'],
+        'Lanjut Kuliah': ['kontak', 'tahun_lulus', 'jenjang', 'jenjang_saatini', 'ipk_saatini', 'prodi_saatini', 'pt_saatini', 'statuspt_saatini', 'lokasipt_saatini'],
+        'Wirausaha': ['kontak', 'tahun_lulus', 'jenjang', 'bidang_usaha', 'tahun_berdiri', 'jumlah_karyawan', 'nama_brand', 'omset', 'alamat_usaha']
+    };
+
+    // 2. Cek apakah status sudah dipilih
     if (!this.status) {
+        Swal.fire({ icon: 'warning', title: 'Perhatian', text: 'Silakan pilih status Anda saat ini.', confirmButtonColor: '#0f172a' });
+        return;
+    }
+
+    // 3. Validasi: Pastikan semua field sesuai status sudah terisi
+    const fieldsToVerify = requiredFields[this.status];
+    const isIncomplete = fieldsToVerify.some(field => !this.formData[field] || this.formData[field].toString().trim() === "");
+
+    if (isIncomplete) {
         Swal.fire({
-            icon: 'warning',
-            title: 'Ups!',
-            text: 'Silakan pilih status Anda saat ini.',
+            icon: 'error',
+            title: 'Data Belum Lengkap',
+            text: 'Mohon lengkapi semua field yang tersedia sebelum menekan tombol submit.',
             confirmButtonColor: '#0f172a'
         });
         return;
     }
 
+    // 4. Proses Submit jika validasi lolos
     this.loading = true;
-
     const tableMap = {
         'Bekerja': 'bekerja',
         'Cari Kerja': 'mencari_kerja',
@@ -459,20 +477,17 @@
         'Wirausaha': 'wirausaha'
     };
 
-    const targetTable = tableMap[this.status];
-
     try {
         const { error } = await supabaseClient
-            .from(targetTable)
+            .from(tableMap[this.status])
             .insert([this.formData]);
 
         if (error) throw error;
 
-        // Animasi Berhasil
         await Swal.fire({
             icon: 'success',
             title: 'Berhasil!',
-            text: 'Data Anda telah tersimpan dalam sistem.',
+            text: 'Data Anda telah tersimpan. Terima kasih telah berpartisipasi!',
             showConfirmButton: false,
             timer: 2000,
             timerProgressBar: true
@@ -482,11 +497,10 @@
 
     } catch (e) {
         console.error(e);
-        // Animasi Gagal
         Swal.fire({
             icon: 'error',
             title: 'Gagal Menyimpan',
-            text: 'Terjadi kendala teknis. Silakan coba beberapa saat lagi.',
+            text: 'Terjadi kesalahan saat mengirim data. Coba lagi nanti.',
             confirmButtonColor: '#0f172a'
         });
     } finally {
@@ -499,3 +513,4 @@
 
 </body>
 </html>
+
